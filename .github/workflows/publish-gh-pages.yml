@@ -32,50 +32,45 @@ jobs:
       with:
         dotnet-version: '8.x'
 
-    # here to write 2
-    # After
     - name: Set basepath on index.html
-        shell: pwsh
-        run: |
-          $filepath = "./workshop/MyPortfolio/wwwroot/index.html"
-          $repository = "${{ github.repository }}" -replace "${{ github.repository_owner }}", ""
-      
-          $html = Get-Content -Path $filepath
-          $html -replace "<base href=`"/`" />", "<base href=`"$repository/`" />" | Out-File -Path $filepath -Force
+      shell: pwsh
+      run: |
+        $filepath = "./workshop/MyPortfolio/wwwroot/index.html"
+        $repository = "${{ github.repository }}" -replace "${{ github.repository_owner }}", ""
+
+        $html = Get-Content -Path $filepath
+        $html -replace "<base href=`"/`" />", "<base href=`"$repository/`" />" | Out-File -Path $filepath -Force
 
     - name: Set basepath on JSON objects
-        shell: pwsh
-        run: |
-          $filepath = "./workshop/MyPortfolio/wwwroot/sample-data"
-          $repository = "${{ github.repository }}" -replace "${{ github.repository_owner }}", ""
-      
-          Get-ChildItem -Path $filepath -Filter "*.json" | ForEach-Object {
-              $json = Get-Content -Path $_.FullName
-              $json.Replace("../", "$repository/") | Out-File -Path $_.FullName -Force
-          }
+      shell: pwsh
+      run: |
+        $filepath = "./workshop/MyPortfolio/wwwroot/sample-data"
+        $repository = "${{ github.repository }}" -replace "${{ github.repository_owner }}", ""
 
+        Get-ChildItem -Path $filepath -Filter "*.json" | ForEach-Object {
+          $json = Get-Content -Path $_.FullName
+          $json.Replace("../", "$repository/") | Out-File -Path $_.FullName -Force
+        }
 
-    # After
     - name: Restore NuGet packages
-        shell: bash
-        run: |
+      shell: bash
+      run: |
         dotnet restore ./workshop
 
     - name: Build solution
-        shell: bash
-        run: |
+      shell: bash
+      run: |
         dotnet build ./workshop -c Release
 
     - name: Test solution
-        shell: bash
-        run: |
+      shell: bash
+      run: |
         dotnet test ./workshop -c Release
 
     - name: Publish artifact
-        shell: bash
-        run: |
+      shell: bash
+      run: |
         dotnet publish ./workshop/MyPortfolio -c Release -o published
-
 
     - name: Upload artifact for web
       uses: actions/upload-pages-artifact@v1
