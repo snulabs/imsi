@@ -1,7 +1,13 @@
 {
-  "name": "Alexandrie Grenier",
-  "title": "Web Designer & Content Creator",
-  "email": "alex@example.com",
-  "linkedIn": "dotnetgirls",
-  "gitHub": "dotnetgirls"
+  "name": "IMSI Lab",
+  "title": "Imaging-driven Medical SuperIntelligence Group",
+  "description": "Advancing healthcare through cutting-edge AI and medical imaging research",
+  "devdesc": "Leading innovations in medical AI, deep learning, and computational imaging for next-generation healthcare solutions",
+  "abouttitle": "Our Research",
+  "email": "snulabs2@gmail.com",
+  "linkedIn": "linkedIn",
+  "gitHub": "snulabs",
+  "about": "IMSI Lab pioneers breakthrough technologies in medical imaging AI, developing sophisticated algorithms that transform how we diagnose, treat, and understand human health. Our interdisciplinary team combines expertise in computer vision, machine learning, and clinical medicine to create intelligent systems that enhance medical decision-making and improve patient outcomes worldwide."
 }
+
+

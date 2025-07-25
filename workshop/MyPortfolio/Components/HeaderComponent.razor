@@ -1,6 +1,70 @@
-<div id="header">
+@* <div id="header">
     <a href="#home" target="_top">Home</a>
     <a href="#about" target="_top">About</a>
     <a href="#portfolio" target="_top">Portfolio</a>
     <a href="#contact" target="_top">Contact</a>
+</div> *@
+<div id="header">
+    <div class="logo">
+        <span>IMSI Lab</span>
+    </div>
+    <nav class="nav-links">
+        <button @onclick="@(() => ShowPage("home"))">Home</button>
+        <button @onclick="@(() => ShowPage("publications"))">Publications</button>
+        <button @onclick="@(() => ShowPage("people"))">People</button>
+        <button @onclick="@(() => ShowPage("news"))">News</button>
+        <button @onclick="@(() => ShowPage("projects"))">Projects</button>
+        <button @onclick="@(() => ShowPage("contact"))">Contact</button>
+        <button @onclick="@(() => ShowPage("join"))">Join</button>
+    </nav>
 </div>
+
+<style>
+    #header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+    }
+
+    .logo span {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 2rem;
+    }
+
+    .nav-links button {
+        background: none;
+        border: none;
+        color: #34495e;
+        font-weight: 500;
+        cursor: pointer;
+        padding: 0.5rem 1rem;
+        transition: color 0.3s;
+    }
+
+    .nav-links button:hover {
+        color: #3498db;
+    }
+</style>
+
+@code {
+    [Parameter] public Action<string>? OnPageChange { get; set; }
+
+    private void ShowPage(string page)
+    {
+        OnPageChange?.Invoke(page);
+    }
+}
