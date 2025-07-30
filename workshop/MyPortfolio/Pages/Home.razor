@@ -114,6 +114,15 @@ else
         </div>
 
 
+
+
+
+
+
+
+
+
+
         <!-- Publications 페이지 -->
         <div style="display: @(currentPage == "publications" ? "block" : "none")">
             <section style="min-height: 100vh; padding: 4rem 2rem; background: #f8f9fa;">
@@ -121,36 +130,218 @@ else
                     <h1 style="text-align: center; margin-bottom: 3rem; color: #2c3e50;">Publications</h1>
                     
                     <div style="display: grid; gap: 2rem;">
+                        <!-- 0. Improving Deep Learning-based Diagnosis... (주석 처리) -->
+                        <!--
                         <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
                             <h3 style="color: #2c3e50; margin-bottom: 1rem;">
-                                <span style="color: #e74c3c; font-weight: 600;">[Under Review]</span> 
-                                Enhancing 3D Medical Vision-Language Models with Slice-wise Visual Prompt
-                            </h3>
-                            <p style="color: #3498db; font-weight: 600; margin: 0.5rem 0;">Medical LLMs Workshop, MICCAI 2025</p>
-                            <p style="color: #7f8c8d; font-style: italic; margin-bottom: 1rem;">Soo Yong Kim, Kyeonghun Kim, Taejin Kim, Yoonkyoung Chun, Hyungjun Kim, Dayoon Lee, Jeong Min Shin, Pa Hong, Nam-Joon Kim</p>
-                            <p>3D computed tomography (CT) volumes present unique challenges for multimodal reasoning because vision-language models (VLMs) must align long spatial-temporal contexts with radiological text while remaining memory-efficient. We introduce a novel slice-wise visual-instruction prompting scheme that enhances model performance by overlaying colored outlines around relevant anatomy in each 2D slice within the 3D volume...</p>
-                        </div>
-                        
-                        <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-                            <h3 style="color: #2c3e50; margin-bottom: 1rem;">
-                                <span style="color: #f39c12; font-weight: 600;">[In Revision]</span> 
                                 Improving Deep Learning-based Diagnosis of Hepatic Tumors on Multi-phase Contrast-enhanced Ultrasound Images: Comparison of Padding Strategies
                             </h3>
                             <p style="color: #3498db; font-weight: 600; margin: 0.5rem 0;">Ultrasonics Sonochemistry, 2025</p>
                             <p style="color: #7f8c8d; font-style: italic; margin-bottom: 1rem;">Taehoon Lee, Jaeyeol Lim, Nam-Joon Kim, Woo Kyoung Jeong, Won Jae Lee, Kyeonghun Kim</p>
-                            <p>Clinical contrast-enhanced ultrasound (CEUS) data are frequently stored at irregular temporal intervals, posing challenges for automated analysis. This study examines whether temporally imbalanced CEUS sequences can enable accurate deep learning-based classification between hepatocellular carcinoma (HCC) and focal nodular hyperplasia (FNH). We evaluated 10 different padding strategies across 3D-CNN and CNN-LSTM architectures, achieving F1-scores of 0.97 and 0.90 respectively...</p>
+                            <p></p>
                         </div>
-                        
+                        -->
+
+                        <!-- 1. Enhancing 3D Medical Vision-Language Models... -->
                         <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-                            <h3 style="color: #2c3e50; margin-bottom: 1rem;">3D-HLDM: Human-guided Latent Diffusion Model to Improve Microvascular Invasion Prediction in Hepatocellular Carcinoma</h3>
-                            <p style="color: #3498db; font-weight: 600; margin: 0.5rem 0;">IEEE International Symposium on Biomedical Imaging (ISBI), 2024</p>
-                            <p style="color: #7f8c8d; font-style: italic; margin-bottom: 1rem;">Hyunho Shin, Nam-Joon Kim, Ji Hye Min, Seol Eui Lee, Ken Ying-Kai Liao, Hyuk-Jae Lee</p>
+                            <h3 style="color: #2c3e50; margin-bottom: 1rem;">
+                                Enhancing 3D Medical Vision-Language Models with Slice-wise Visual Prompt
+                            </h3>
+                            <p style="color: #3498db; font-weight: 600; margin: 0.5rem 0;">ELAMI Workshop at MICCAI, 2025</p>
+                            <p style="color: #7f8c8d; font-style: italic; margin-bottom: 1rem;">Soo Yong Kim, Kyeonghun Kim, Taejin Kim, Yoonkyoung Chun, Hyungjun Kim, Dayoon Lee, Jeongmin Shin, Pa Hong, Nam-Joon Kim</p>
+                            <p>3D computed tomography (CT) volumes present unique challenges for multimodal reasoning because vision-language models (VLMs) must align long spatial-temporal contexts with radiological text while remaining memory-efficient. We introduce a novel slice-wise visual-instruction prompting scheme that enhances model performance by overlaying colored outlines around relevant anatomy in each 2D slice within the 3D volume...</p>
+                        </div>
+
+                        <!-- 2. FPGA-based implementation... -->
+                        <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                            <h3 style="color: #2c3e50; margin-bottom: 1rem;">
+                                FPGA-based implementation of a controlled phase-rotation computational accelerator for quantum Fourier transforms
+                            </h3>
+                            <p style="color: #3498db; font-weight: 600; margin: 0.5rem 0;">2025 IEEE Int. Conf. Consumer Electronics - Taiwan (ICCE-TW), 2025</p>
+                            <p style="color: #7f8c8d; font-style: italic; margin-bottom: 1rem;">Seung Jun Lee, Nam-Joon Kim, Hyuk-jae Lee</p>
+                            <p></p>
+                        </div>
+
+                        <!-- 3. TeXBLEU: Automatic Metric... -->
+                        <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                            <h3 style="color: #2c3e50; margin-bottom: 1rem;">
+                                TeXBLEU: Automatic Metric for Evaluate LaTeX Format
+                            </h3>
+                            <p style="color: #3498db; font-weight: 600; margin: 0.5rem 0;">IEEE Int. Conf. Acoustics, Speech, and Signal Processing (ICASSP), 2025</p>
+                            <p style="color: #7f8c8d; font-style: italic; margin-bottom: 1rem;">Kyudan Jung, Nam-Joon Kim (corresponding author), Hyun Gon Ryu, Sieun Hyeon, Seung-jun Lee, Hyuk-jae Lee</p>
+                            <p></p>
+                        </div>
+
+                        <!-- 4. MathReader: Text-to-Speech... -->
+                        <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                            <h3 style="color: #2c3e50; margin-bottom: 1rem;">
+                                MathReader: Text-to-Speech for Mathematical Documents
+                            </h3>
+                            <p style="color: #3498db; font-weight: 600; margin: 0.5rem 0;">IEEE Int. Conf. Acoustics, Speech, and Signal Processing (ICASSP), 2025</p>
+                            <p style="color: #7f8c8d; font-style: italic; margin-bottom: 1rem;">Sieun Hyeon, Kyudan Jung, Nam-Joon Kim (corresponding author), Hyun Gon Ryu, Jaeyoung Do</p>
+                            <p></p>
+                        </div>
+
+                        <!-- 5. High-Throughput LLM Serving... -->
+                        <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                            <h3 style="color: #2c3e50; margin-bottom: 1rem;">
+                                High-Throughput LLM Serving on Edge Devices (NVIDIA Jetson AGX Orin 32GB)
+                            </h3>
+                            <p style="color: #3498db; font-weight: 600; margin: 0.5rem 0;">NVIDIA GTC 2025</p>
+                            <p style="color: #7f8c8d; font-style: italic; margin-bottom: 1rem;">Jeongjun Kim, Donghwee Son, Jun Sung, Nam-Joon Kim, Hyungon Ryu, Hyuk-jae Lee</p>
+                            <p></p>
+                        </div>
+
+                        <!-- 6. Enhancing ASR and TTS Models... -->
+                        <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                            <h3 style="color: #2c3e50; margin-bottom: 1rem;">
+                                Enhancing ASR and TTS Models with LLM for Accessible Mathematical Learning in Students with Disabilities
+                            </h3>
+                            <p style="color: #3498db; font-weight: 600; margin: 0.5rem 0;">NVIDIA GTC 2025</p>
+                            <p style="color: #7f8c8d; font-style: italic; margin-bottom: 1rem;">Kyudan Jung, Sieun Hyeon, Nam-Joon Kim, Hyungon Ryu, Hyuk-jae Lee</p>
+                            <p></p>
+                        </div>
+
+                        <!-- 7. MathSpeech: Leveraging LLMs... -->
+                        <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                            <h3 style="color: #2c3e50; margin-bottom: 1rem;">
+                                MathSpeech: Leveraging LLMs to generate Equations from Mathematical Speech
+                            </h3>
+                            <p style="color: #3498db; font-weight: 600; margin: 0.5rem 0;">39th AAAI Conf. Artificial Intelligence (AAAI), 2025</p>
+                            <p style="color: #7f8c8d; font-style: italic; margin-bottom: 1rem;">Sieun Hyeon, Kyudan Jung, Jaehee Won, Nam-Joon Kim (corresponding author), Hyun Gon Ryu, Hyuk-Jae Lee, Jaeyoung Do</p>
+                            <p></p>
+                        </div>
+
+                        <!-- 8. Analysis of Transformer Decoder... -->
+                        <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                            <h3 style="color: #2c3e50; margin-bottom: 1rem;">
+                                Analysis of Transformer Decoder Architecture and KV Cache Behavior During LLM Inference
+                            </h3>
+                            <p style="color: #3498db; font-weight: 600; margin: 0.5rem 0;">IEEE Int. Conf. Electronics, Information, and Communication (ICEIC), 2025</p>
+                            <p style="color: #7f8c8d; font-style: italic; margin-bottom: 1rem;">Kyudan Jung, Jeong Youn Kwon, Young-Dae Mun, Byeong-Geun Kang, Joon-seok Song, Min-ji Kim, Nam-Joon Kim, Hyun Gon Ryu, Hyuk-Jae Lee</p>
+                            <p></p>
+                        </div>
+
+                        <!-- 9. Intuitive Robot Arm Control... -->
+                        <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                            <h3 style="color: #2c3e50; margin-bottom: 1rem;">
+                                Intuitive Robot Arm Control System Based HMD Hand Tracking
+                            </h3>
+                            <p style="color: #3498db; font-weight: 600; margin: 0.5rem 0;">IEEE Int. Conf. Electronics, Information, and Communication (ICEIC), 2025</p>
+                            <p style="color: #7f8c8d; font-style: italic; margin-bottom: 1rem;">Seung Jun Lee, Hyeong Jin Do, Tae Hyeong Kim, Kyudan Jung, Hyun Gon Ryu, Nam-Joon Kim</p>
+                            <p></p>
+                        </div>
+
+                        <!-- 10. Enhancing ASR Performance Through OCR... -->
+                        <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                            <h3 style="color: #2c3e50; margin-bottom: 1rem;">
+                                Enhancing ASR Performance Through OCR Word Frequency Analysis: Theoretical Foundations
+                            </h3>
+                            <p style="color: #3498db; font-weight: 600; margin: 0.5rem 0;">IEEE Int. Conf. Consumer Electronics (ICCE), 2025</p>
+                            <p style="color: #7f8c8d; font-style: italic; margin-bottom: 1rem;">Kyudan Jung, Nam-Joon Kim, Hyun Gon Ryu, Hyuk-Jae Lee</p>
+                            <p></p>
+                        </div>
+
+                        <!-- 11. Extending Whisper for Korean-English... -->
+                        <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                            <h3 style="color: #2c3e50; margin-bottom: 1rem;">
+                                Extending Whisper for Korean-English Code-Switching Speech Recognition
+                            </h3>
+                            <p style="color: #3498db; font-weight: 600; margin: 0.5rem 0;">IEEE Int. Conf. Consumer Electronics (ICCE), 2025</p>
+                            <p style="color: #7f8c8d; font-style: italic; margin-bottom: 1rem;">Hyeong Gi Seong, Nam Joon Kim, Hyun Gon Ryu, Hyuk-Jae Lee</p>
+                            <p></p>
+                        </div>
+
+                        <!-- 12. Enhanced Electrical Performance... -->
+                        <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                            <h3 style="color: #2c3e50; margin-bottom: 1rem;">
+                                Enhanced Electrical Performance in SiC Double-Trench MOSFETs through Optimization Techniques
+                            </h3>
+                            <p style="color: #3498db; font-weight: 600; margin: 0.5rem 0;">IEEE Int. Conf. Consumer Electronics - Asia (ICCE-Asia), 2024</p>
+                            <p style="color: #7f8c8d; font-style: italic; margin-bottom: 1rem;">Jae-duck Yoon, Kyudan Jung, Min-ji Kim, Joon-seok Song, Nam-Joon Kim</p>
+                            <p></p>
+                        </div>
+
+                        <!-- 13. Face-To-Music... -->
+                        <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                            <h3 style="color: #2c3e50; margin-bottom: 1rem;">
+                                Face-To-Music: Music Generation Based on Facial Emotions
+                            </h3>
+                            <p style="color: #3498db; font-weight: 600; margin: 0.5rem 0;">2024 IEEE Int. Conf. Consumer Electronics - Taiwan (ICCE-TW), 2024</p>
+                            <p style="color: #7f8c8d; font-style: italic; margin-bottom: 1rem;">Sieun Hyeon, Hyeong Gi Seong, Nam Joon Kim, Hyuk-Jae Lee</p>
+                            <p></p>
+                        </div>
+
+                        <!-- 14. Enhancing ASR Performance through Relative Word Frequency... -->
+                        <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                            <h3 style="color: #2c3e50; margin-bottom: 1rem;">
+                                Enhancing ASR Performance through Relative Word Frequency in OCR and Normal Word Frequency Analysis
+                            </h3>
+                            <p style="color: #3498db; font-weight: 600; margin: 0.5rem 0;">6th IEEE Int. Conf. AI Circuits and Systems (AICAS), 2024</p>
+                            <p style="color: #7f8c8d; font-style: italic; margin-bottom: 1rem;">Kyudan Jung, Seungmin Bae, Nam Joon Kim (corresponding author), Jaepil Lim, Hyun Gon Ryu, Hyuk-Jae Lee</p>
+                            <p></p>
+                        </div>
+
+                        <!-- 15. 3D-HLDM... -->
+                        <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                            <h3 style="color: #2c3e50; margin-bottom: 1rem;">
+                                3D-HLDM: Human-guided Latent Diffusion Model to improve Microvascular Invasion Prediction in Hepatocellular Carcinoma
+                            </h3>
+                            <p style="color: #3498db; font-weight: 600; margin: 0.5rem 0;">2024 IEEE 21st Int. Symp. Biomedical Imaging (ISBI), 2024</p>
+                            <p style="color: #7f8c8d; font-style: italic; margin-bottom: 1rem;">Hyunho Shin, Nam-Joon Kim (corresponding author), Ji Hye Min, Seol Eui Lee, Ken Ying-Kai Liao, Hyuk-Jae Lee</p>
                             <p>Microvascular invasion (MVI) is a critical risk factor for survival in patients with Hepatocellular Carcinoma. The presurgical prediction of MVI is clinically important for surgical and treatment planning. We propose a human-guided 3D Latent Diffusion Model (3D-HLDM) for generating high-resolution synthetic MVI datasets to overcome data scarcity limitations. Experiments using 475 clinical cases from Samsung Medical Center showed significant improvements in CNN-based prediction models...</p>
                         </div>
+
+                        <!-- 16. Improving ASR Performance with OCR... -->
+                        <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                            <h3 style="color: #2c3e50; margin-bottom: 1rem;">
+                                Improving ASR Performance with OCR Through Using Word Frequency Difference
+                            </h3>
+                            <p style="color: #3498db; font-weight: 600; margin: 0.5rem 0;">IEEE Int. Conf. Electronics, Information, and Communication (ICEIC), 2024</p>
+                            <p style="color: #7f8c8d; font-style: italic; margin-bottom: 1rem;">Kyudan Jung, Seungmin Bae, Nam Joon Kim, Hyun Gon Ryu, Hyuk-Jae Lee</p>
+                            <p></p>
+                        </div>
+
+                        <!-- 17. Deep Learning Classification... -->
+                        <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                            <h3 style="color: #2c3e50; margin-bottom: 1rem;">
+                                Deep Learning Classification of Focal Liver Lesions with Contrast-Enhanced Ultrasound from Arterial Phase Recordings
+                            </h3>
+                            <p style="color: #3498db; font-weight: 600; margin: 0.5rem 0;">IEEE Int. Conf. Electronics, Information, and Communication (ICEIC), 2023</p>
+                            <p style="color: #7f8c8d; font-style: italic; margin-bottom: 1rem;">NamJoon Kim, Won Jae Lee, Hyuk-Jae Lee</p>
+                            <p></p>
+                        </div>
+
+                        <!-- 18. Survey on Automated Machine Learning... -->
+                        <div style="background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                            <h3 style="color: #2c3e50; margin-bottom: 1rem;">
+                                Survey on Automated Machine Learning (AutoML) for Model Compression
+                            </h3>
+                            <p style="color: #3498db; font-weight: 600; margin: 0.5rem 0;">IEEE Int. Conf. Electronics, Information, and Communication (ICEIC), 2022</p>
+                            <p style="color: #7f8c8d; font-style: italic; margin-bottom: 1rem;">Nam Joon Kim</p>
+                            <p></p>
+                        </div>
+
                     </div>
                 </div>
             </section>
         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         <!-- People 페이지 -->
