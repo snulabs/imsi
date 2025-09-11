@@ -1,0 +1,7 @@
+TeamID,TeamName,Generation,LeaderName,LeaderEmail,StartDate,EndDate,IsActive,Description
+1,SUDAL,1,Kyeonghun Kim,khkim1729@gmail.com,2024-09-27,Present,TRUE,3D Generative AI
+2,PNI,1,Youngung Han,yuhan@snu.ac.kr,2024-09-27,Present,TRUE,Neural Detection
+3,CEUS,1,Taehoon Lee,dlxogns0128@snu.ac.kr,2024-12-02,2025-06-23,FALSE,Ultrasound Analysis
+4,CEUS,2,Jaeyeol Lim,limlimlim00@snu.ac.kr,2024-09-27,Present,TRUE,Ultrasound Analysis
+5,HAEDAL,1,Soo Yong Kim,ksyint1111@snu.ac.kr,2024-10-21,Present,TRUE,Advanced Medical AI
+6,MultiModal,1,Soo Yong Kim,ksyint1111@snu.ac.kr,2024-09-27,2024-10-21,FALSE,Vision-Language Models (Disbanded)
