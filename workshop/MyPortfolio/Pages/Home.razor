@@ -988,10 +988,10 @@ else
                                 </div>
 
                                 <!-- 김수용 - Soo Yong Kim -->
-                                <div style="border: 1px solid #ecf0f1; padding: 1rem; border-radius: 8px;">
+                                <div id="sooyong-profile" style="border: 1px solid #ecf0f1; padding: 1rem; border-radius: 8px; cursor: pointer;">
                                     <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
                                         <div style="width: 40px; height: 40px; border-radius: 50%; background: #9b59b6; margin-right: 0.8rem; flex-shrink: 0;">
-                                            <img src="images/profiles/6_profile_sooyong_kim.png" alt="Soo Yong Kim" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" />
+                                            <img id="sooyong-img" src="images/profiles/6_profile_sooyong_kim.png" alt="Soo Yong Kim" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" />
                                         </div>
                                         <div>
                                             <h5 style="color: #2c3e50; margin: 0;">Soo Yong Kim <span style="color: #9B59B6; font-size: 0.9rem;" title="Master">⚔️</span></h5>
@@ -1621,7 +1621,7 @@ else
                     </div>
 
                     <!-- Rank System Legend -->
-                    <div style="margin-bottom: 3rem;">
+                    <div id="skill-level-system" style="margin-bottom: 3rem; display: none;">
                         <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); text-align: center;">
                             <h3 style="color: #2c3e50; margin-bottom: 1.5rem; font-size: 1.2rem;">Skill Level System</h3>
                             <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; font-size: 0.85rem;">
@@ -2360,21 +2360,23 @@ else
 <script>
     window.seoyoungClickCount = 0;
     window.isDevilMode = false;
-    
+    window.sooyongClickCount = 0;
+    window.isSkillSystemVisible = false;
+
     function initSeoyoungEasterEgg() {
         const seoyoungProfile = document.getElementById('seoyoung-profile');
         const seoyoungImg = document.getElementById('seoyoung-img');
         const devilEffect = document.getElementById('devil-effect');
-        
+
         if (seoyoungProfile && seoyoungImg && devilEffect) {
             seoyoungProfile.onclick = function() {
                 window.seoyoungClickCount++;
                 console.log('Click count:', window.seoyoungClickCount, 'Devil mode:', window.isDevilMode);
-                
+
                 if (!window.isDevilMode && window.seoyoungClickCount === 3) {
                     // Show devil effect
                     devilEffect.style.display = 'block';
-                    
+
                     setTimeout(function() {
                         devilEffect.style.display = 'none';
                         seoyoungImg.src = 'images/profiles/4_1_profile_seoyoung_ju_devil.png';
@@ -2385,7 +2387,7 @@ else
                 else if (window.isDevilMode && window.seoyoungClickCount === 3) {
                     // Show effect and revert to normal
                     devilEffect.style.display = 'block';
-                    
+
                     setTimeout(function() {
                         devilEffect.style.display = 'none';
                         seoyoungImg.src = 'images/profiles/4_profile_seoyoung_ju.png';
@@ -2396,15 +2398,46 @@ else
             };
         }
     }
-    
+
+    function initSooyongEasterEgg() {
+        const sooyongProfile = document.getElementById('sooyong-profile');
+        const skillLevelSystem = document.getElementById('skill-level-system');
+
+        if (sooyongProfile && skillLevelSystem) {
+            sooyongProfile.onclick = function() {
+                window.sooyongClickCount++;
+                console.log('Soo Yong Kim click count:', window.sooyongClickCount, 'Skill system visible:', window.isSkillSystemVisible);
+
+                if (window.sooyongClickCount === 2) {
+                    // Toggle skill level system visibility
+                    if (!window.isSkillSystemVisible) {
+                        skillLevelSystem.style.display = 'block';
+                        window.isSkillSystemVisible = true;
+                        console.log('Skill Level System revealed!');
+                    } else {
+                        skillLevelSystem.style.display = 'none';
+                        window.isSkillSystemVisible = false;
+                        console.log('Skill Level System hidden!');
+                    }
+                    window.sooyongClickCount = 0;
+                }
+            };
+        }
+    }
+
+    function initEasterEggs() {
+        initSeoyoungEasterEgg();
+        initSooyongEasterEgg();
+    }
+
     // Try to initialize multiple times to ensure it works
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initSeoyoungEasterEgg);
+        document.addEventListener('DOMContentLoaded', initEasterEggs);
     } else {
-        initSeoyoungEasterEgg();
+        initEasterEggs();
     }
-    
+
     // Also try after a short delay
-    setTimeout(initSeoyoungEasterEgg, 1000);
+    setTimeout(initEasterEggs, 1000);
 </script>
 
