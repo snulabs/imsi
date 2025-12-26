@@ -352,3 +352,7 @@ MigrationBackup/
 
 # Claude Code files
 .claude/
+
+docs_backup/
+docs_backup_*.zip
+
