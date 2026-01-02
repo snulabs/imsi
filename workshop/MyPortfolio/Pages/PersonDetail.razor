@@ -1,0 +1,229 @@
+@page "/person/{PersonId}"
+@using MyPortfolio.Models
+@using MyPortfolio.Services
+@inject SheetService SheetService
+@inject NavigationManager Navigation
+
+<PageTitle>@(person?.Name ?? "Person") - IMSI Lab</PageTitle>
+
+<link href="css/people.css" rel="stylesheet" />
+
+<div class="people-page">
+    <div class="people-container">
+        @if (person == null)
+        {
+            <div style="text-align:center; padding: 10rem;">
+                <p>Loading person information...</p>
+            </div>
+        }
+        else
+        {
+            <!-- 뒤로가기 화살표 -->
+            <div class="back-arrow-container">
+                <button class="back-arrow" @onclick="GoBack">
+                    ←
+                </button>
+            </div>
+
+            <!-- 개인 정보를 person-card 스타일로 표시 -->
+            <div class="person-detail-grid">
+                <div class="person-card-large">
+                    <div class="person-avatar">
+                        @{
+                            var imagePath = GetProfileImagePath(person.PersonId);
+                        }
+                        @if (!string.IsNullOrEmpty(imagePath))
+                        {
+                            <img src="@imagePath" alt="@person.Name" class="avatar-photo" />
+                        }
+                        else
+                        {
+                            <div class="avatar-placeholder">
+                                @(string.IsNullOrWhiteSpace(person.Name) ? "I" : person.Name.Trim()[0].ToString().ToUpper())
+                            </div>
+                        }
+                    </div>
+
+                    <div class="person-info">
+                        <h3 class="person-name">@person.Name</h3>
+                        <p class="person-affiliation">
+                            <strong>@person.Org</strong><br />
+                            @person.Dept @(string.IsNullOrEmpty(person.SubOrg) ? "" : $"— {person.SubOrg}")
+                        </p>
+                        @if(!string.IsNullOrEmpty(person.Email)) 
+                        { 
+                            <p style="font-size:0.9rem; color:#666; margin: 10px 0;">@person.Email</p> 
+                        }
+                    </div>
+
+                    <div class="person-details">
+                        @if (!string.IsNullOrEmpty(person.Education))
+                        {
+                            <div class="detail-item">
+                                <strong>Education</strong>
+                                <p>@((MarkupString)person.Education.Replace("\n", "<br/>"))</p>
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(person.Experience))
+                        {
+                            <div class="detail-item">
+                                <strong>Experience</strong>
+                                <p>@((MarkupString)person.Experience.Replace("\n", "<br/>"))</p>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="person-links">
+                        @if (!string.IsNullOrEmpty(person.Github)) { <a href="@person.Github" target="_blank">GITHUB</a> }
+                        @if (!string.IsNullOrEmpty(person.Linkedin)) { <a href="@person.Linkedin" target="_blank">LINKEDIN</a> }
+                        @if (!string.IsNullOrEmpty(person.Blog)) { <a href="@person.Blog" target="_blank">BLOG</a> }
+                    </div>
+                </div>
+
+                <!-- 논문 목록 (오른쪽) -->
+                <div class="additional-info">
+                    <div class="publications-section">
+                        <h3 style="font-size: 1.8rem; margin-bottom: 2rem; border-bottom: 2px solid #000; padding-bottom: 1rem;">
+                            Publications (@(personPublications?.Count ?? 0))
+                        </h3>
+                        
+                        @if (personPublications != null && personPublications.Any())
+                        {
+                            <div class="publication-list">
+                                @foreach (var pub in personPublications)
+                                {
+                                    <div class="publication-item">
+                                        <div class="pub-header">
+                                            <span class="pub-year">@pub.Year</span>
+                                            @if (IsCorrespondingAuthor(pub.Pub_ID))
+                                            {
+                                                <span class="badge-corresponding">Corresponding</span>
+                                            }
+                                            @if (IsCoFirstAuthor(pub.Pub_ID))
+                                            {
+                                                <span class="badge-cofirst">Co-first</span>
+                                            }
+                                        </div>
+                                        <h4 class="pub-title">@pub.Title</h4>
+                                        <p class="pub-venue">@pub.Venue_Name</p>
+                                        <p class="pub-authors">@pub.Authors</p>
+                                        @if (!string.IsNullOrEmpty(pub.Notes))
+                                        {
+                                            <p class="pub-notes">@pub.Notes</p>
+                                        }
+                                        <div class="pub-links">
+                                            @if (!string.IsNullOrEmpty(pub.Paper_Link))
+                                            {
+                                                <a href="@pub.Paper_Link" target="_blank" class="pub-link">📄 Paper</a>
+                                            }
+                                            @if (!string.IsNullOrEmpty(pub.Venue_Link))
+                                            {
+                                                <a href="@pub.Venue_Link" target="_blank" class="pub-link">🔗 Venue</a>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <p style="color: #999; font-style: italic; text-align: center; padding: 3rem;">No publications yet</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string? PersonId { get; set; }
+
+    private WebPerson? person;
+    private List<WebPerson>? allPeople;
+    private List<WebPublication>? personPublications;
+    private List<WebPublicationAuthor>? publicationAuthors;
+    private string? returnCategory;
+
+    protected override async Task OnInitializedAsync()
+    {
+        allPeople = await SheetService.GetWebPeopleAsync();
+        
+        if (allPeople != null && !string.IsNullOrEmpty(PersonId))
+        {
+            person = allPeople.FirstOrDefault(p => 
+                ToUrlSafe(p.Name) == PersonId.ToLower());
+            
+            if (person != null && !string.IsNullOrEmpty(person.PersonId))
+            {
+                // 카테고리 확인
+                var category = person.Category?.ToLower() ?? "";
+                if (category.Contains("professor")) returnCategory = "professors";
+                else if (category.Contains("researcher")) returnCategory = "researchers";
+                else if (category.Contains("student")) returnCategory = "students";
+                else if (category.Contains("advisor")) returnCategory = "advisors";
+                else if (category.Contains("alumni")) returnCategory = "alumni";
+                else returnCategory = "professors";
+
+                // 논문 데이터 JOIN
+                var allPubs = await SheetService.GetWebPublicationsAsync();
+                publicationAuthors = await SheetService.GetWebPublicationAuthorsAsync();
+                
+                // 이 사람이 참여한 논문 ID 찾기
+                var myPubIds = publicationAuthors?
+                    .Where(pa => pa.PersonId == person.PersonId)
+                    .Select(pa => pa.PubId)
+                    .Distinct()
+                    .ToList() ?? new List<string>();
+                
+                // 논문 상세 정보 가져오기
+                personPublications = allPubs?
+                    .Where(p => myPubIds.Contains(p.Pub_ID))
+                    .OrderByDescending(p => p.Year)
+                    .ThenBy(p => p.Title)
+                    .ToList();
+
+                Console.WriteLine($"✅ Found {personPublications?.Count ?? 0} publications for {person.Name}");
+            }
+        }
+    }
+
+    private void GoBack()
+    {
+        Navigation.NavigateTo($"/people/{returnCategory ?? "professors"}");
+    }
+
+    private string ToUrlSafe(string? name)
+    {
+        if (string.IsNullOrEmpty(name)) return "";
+        return name.ToLower()
+            .Replace(" ", "-")
+            .Replace(".", "");
+    }
+
+    private string? GetProfileImagePath(string? personId)
+    {
+        if (personId == "P_0001")
+        {
+            return "/images/profiles/11_namjoon_kim_skyblue.png";
+        }
+        return null;
+    }
+
+    private bool IsCorrespondingAuthor(string pubId)
+    {
+        return publicationAuthors?.Any(pa => 
+            pa.PubId == pubId && 
+            pa.PersonId == person?.PersonId && 
+            pa.IsCorresponding == "Y") ?? false;
+    }
+
+    private bool IsCoFirstAuthor(string pubId)
+    {
+        return publicationAuthors?.Any(pa => 
+            pa.PubId == pubId && 
+            pa.PersonId == person?.PersonId && 
+            pa.IsCoFirstAuthor == "Y") ?? false;
+    }
+}

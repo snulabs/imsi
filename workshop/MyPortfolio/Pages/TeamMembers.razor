@@ -1,0 +1,215 @@
+@page "/team-members"
+@page "/team-members/{TeamId}"
+@using MyPortfolio.Models
+@using MyPortfolio.Services
+@inject SheetService SheetService
+@inject NavigationManager Navigation
+
+<PageTitle>Teams - IMSI Lab</PageTitle>
+
+<link href="css/people.css" rel="stylesheet" />
+
+<div class="people-page">
+    <div class="people-container">
+        <header class="page-header">
+            <h1>Laboratory Teams</h1>
+            <p class="subtitle">IMSI Lab Research Groups & Members</p>
+        </header>
+
+        @if (teamMembers == null || allPeople == null)
+        {
+            <div style="text-align:center; padding: 10rem;">
+                <p>Loading team data from Google Sheets...</p>
+            </div>
+        }
+        else if (!availableTeams.Any())
+        {
+            <div style="text-align:center; padding: 5rem;">
+                <h3>No teams found</h3>
+                <p>Debug Info:</p>
+                <p>Total team members: @teamMembers.Count</p>
+                <p>Total people: @allPeople.Count</p>
+            </div>
+        }
+        else
+        {
+            <!-- 팀 카테고리 탭 네비게이션 -->
+            <div class="category-tabs">
+                @foreach (var team in availableTeams)
+                {
+                    <button class="tab-button @(selectedTeam == team ? "active" : "")" 
+                            @onclick='() => SelectTeam(team)'>
+                        @team
+                    </button>
+                }
+            </div>
+
+            <!-- 선택된 팀에 따라 표시 -->
+            <div class="category-content">
+                @RenderTeamSection(selectedTeam)
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string? TeamId { get; set; }
+
+    private List<WebPersonTeam>? teamMembers;
+    private List<WebPerson>? allPeople;
+    private List<string> availableTeams = new();
+    private string selectedTeam = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        teamMembers = await SheetService.GetWebPersonTeamsAsync();
+        allPeople = await SheetService.GetWebPeopleAsync();
+
+        if (teamMembers != null && teamMembers.Any())
+        {
+            availableTeams = teamMembers
+                .Select(m => m.TeamId)
+                .Distinct()
+                .OrderBy(t => t)
+                .ToList();
+
+            if (availableTeams.Any())
+            {
+                selectedTeam = availableTeams.First();
+            }
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (!string.IsNullOrEmpty(TeamId) && availableTeams.Contains(TeamId))
+        {
+            selectedTeam = TeamId;
+        }
+        else if (availableTeams.Any())
+        {
+            selectedTeam = availableTeams.First();
+        }
+    }
+
+    private void SelectTeam(string team)
+    {
+        selectedTeam = team;
+        Navigation.NavigateTo($"/team-members/{team}");
+    }
+
+    private void GoToPersonDetail(string personId)
+    {
+        var person = allPeople?.FirstOrDefault(p => p.PersonId == personId);
+        if (person != null)
+        {
+            var urlSafeName = person.Name?.ToLower()
+                .Replace(" ", "-")
+                .Replace(".", "") ?? "";
+            Navigation.NavigateTo($"/person/{urlSafeName}");
+        }
+    }
+
+    private string? GetProfileImagePath(string? personId)
+    {
+        if (personId == "P_0001")
+        {
+            return "/images/profiles/11_namjoon_kim_skyblue.png";
+        }
+        return null;
+    }
+
+    RenderFragment RenderTeamSection(string team) => @<section class="people-section">
+        @{
+            var members = teamMembers?
+                .Where(m => m.TeamId == team)
+                .OrderByDescending(m => m.TeamRole.Contains("Leader"))
+                .ToList();
+        }
+
+        @if (members != null && members.Any())
+        {
+            <div class="section-header">
+                <h2>@team</h2>
+                <span class="count">@members.Count members</span>
+            </div>
+
+            <div class="people-grid">
+                @foreach (var member in members)
+                {
+                    var person = allPeople?.FirstOrDefault(p => p.PersonId == member.PersonId);
+                    
+                    @if (person != null)
+                    {
+                        <div class="person-card @(member.TeamRole.Contains("Leader") ? "leader-card" : "")" 
+                             @onclick="() => GoToPersonDetail(member.PersonId)" 
+                             style="cursor: pointer;">
+                            <div class="person-avatar">
+                                @{
+                                    var imagePath = GetProfileImagePath(person.PersonId);
+                                }
+                                @if (!string.IsNullOrEmpty(imagePath))
+                                {
+                                    <img src="@imagePath" alt="@person.Name" class="avatar-photo" />
+                                }
+                                else
+                                {
+                                    <div class="avatar-placeholder">
+                                        @(string.IsNullOrWhiteSpace(person.Name) ? "I" : person.Name.Trim()[0].ToString().ToUpper())
+                                    </div>
+                                }
+                            </div>
+
+                            @if (member.TeamRole.Contains("Leader"))
+                            {
+                                <div class="role-badge">@member.TeamRole</div>
+                            }
+
+                            <div class="person-info">
+                                <h3 class="person-name">@person.Name</h3>
+                                <p class="person-affiliation">
+                                    <strong>@person.Org</strong><br />
+                                    @person.Dept @(string.IsNullOrEmpty(person.SubOrg) ? "" : $"— {person.SubOrg}")
+                                </p>
+                                @if(!string.IsNullOrEmpty(person.Email)) 
+                                { 
+                                    <p style="font-size:0.9rem; color:#666; margin: 10px 0;">@person.Email</p> 
+                                }
+                            </div>
+
+                            <div class="person-details">
+                                @if (!string.IsNullOrEmpty(person.Education))
+                                {
+                                    <div class="detail-item">
+                                        <strong>Education</strong>
+                                        <p>@((MarkupString)person.Education.Replace("\n", "<br/>"))</p>
+                                    </div>
+                                }
+                                @if (!string.IsNullOrEmpty(person.Experience))
+                                {
+                                    <div class="detail-item">
+                                        <strong>Experience</strong>
+                                        <p>@((MarkupString)person.Experience.Replace("\n", "<br/>"))</p>
+                                    </div>
+                                }
+                            </div>
+
+                            <div class="person-links">
+                                @if (!string.IsNullOrEmpty(person.Github)) { <a href="@person.Github" target="_blank" @onclick:stopPropagation="true">GITHUB</a> }
+                                @if (!string.IsNullOrEmpty(person.Linkedin)) { <a href="@person.Linkedin" target="_blank" @onclick:stopPropagation="true">LINKEDIN</a> }
+                                @if (!string.IsNullOrEmpty(person.Blog)) { <a href="@person.Blog" target="_blank" @onclick:stopPropagation="true">BLOG</a> }
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        }
+        else
+        {
+            <div style="padding:2rem; text-align:center;">
+                <p>No members found in @team</p>
+            </div>
+        }
+    </section>;
+}

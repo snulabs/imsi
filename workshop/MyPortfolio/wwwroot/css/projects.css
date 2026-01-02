@@ -1,0 +1,118 @@
+.projects-page {
+    background: #f8f9fa;
+    padding: 4rem 0;
+    min-height: 100vh;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 2.5rem;
+    margin-top: 3rem;
+}
+
+.project-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #edf2f7;
+    transition: transform 0.3s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-10px);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.project-icon {
+    font-size: 2.5rem;
+}
+
+.team-tag {
+    background: #ebf8ff;
+    color: #2b6cb0;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.project-title {
+    font-size: 1.75rem;
+    color: #1a202c;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.project-content h3 {
+    font-size: 1.1rem;
+    color: #2d3748;
+    margin-bottom: 0.8rem;
+    font-weight: 700;
+    border-left: 4px solid #4299e1;
+    padding-left: 0.8rem;
+}
+
+.overview p {
+    color: #4a5568;
+    font-size: 1rem;
+    margin-bottom: 2rem;
+}
+
+.achievements ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 2rem;
+}
+
+.achievements li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.8rem;
+    color: #4a5568;
+    font-size: 0.95rem;
+}
+
+.achievements li::before {
+    content: "▹";
+    position: absolute;
+    left: 0;
+    color: #4299e1;
+    font-weight: bold;
+}
+
+.card-footer {
+    margin-top: auto;
+    padding-top: 1.5rem;
+    border-top: 1px dashed #e2e8f0;
+}
+
+.milestones strong {
+    font-size: 0.9rem;
+    color: #2d3748;
+}
+
+.milestones p {
+    font-size: 0.9rem;
+    color: #718096;
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+
+@media (max-width: 768px) {
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+    .project-card {
+        padding: 1.5rem;
+    }
+}

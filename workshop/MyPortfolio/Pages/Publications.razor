@@ -1,0 +1,88 @@
+@page "/publications"
+@using MyPortfolio.Models
+@using MyPortfolio.Services
+@inject SheetService SheetService
+
+<PageTitle>Publications - IMSI Lab</PageTitle>
+
+<div class="pub-page">
+    <div class="container">
+        <header class="page-header">
+            <h1>Publications</h1>
+            <p class="subtitle">Updated from Google Sheets (WEB_Publications)</p>
+        </header>
+
+        @if (publications == null)
+        {
+            <div class="loading-container">
+                <div class="loading-spinner"></div>
+                <p>Loading publications...</p>
+            </div>
+        }
+        else if (!publications.Any())
+        {
+            <div class="no-data">
+                <h2>No publications found.</h2>
+                <p>Check back later for updates.</p>
+            </div>
+        }
+        else
+        {
+            @foreach (var group in groupedByYear)
+            {
+                <section class="pub-section">
+                    <div class="section-header">
+                        <h2>@group.Key</h2>
+                        <span class="count">@group.Count() papers</span>
+                    </div>
+
+                    <div class="pub-list">
+                        @foreach (var pub in group.OrderByDescending(p => p.Pub_ID))
+                        {
+                            <article class="pub-item">
+                                <h3 class="pub-title">@pub.Title</h3>
+                                <p class="pub-venue">@pub.Venue_Name</p>
+                                <p class="pub-authors">@pub.Authors</p>
+
+                                @if (!string.IsNullOrEmpty(pub.Notes))
+                                {
+                                    <details class="pub-notes">
+                                        <summary>Notes / Abstract</summary>
+                                        <p>@pub.Notes</p>
+                                    </details>
+                                }
+
+                                <div class="pub-links">
+                                    @if (!string.IsNullOrEmpty(pub.Paper_Link))
+                                    {
+                                        <a href="@pub.Paper_Link" target="_blank">Paper</a>
+                                    }
+                                    @if (!string.IsNullOrEmpty(pub.Venue_Link))
+                                    {
+                                        <a href="@pub.Venue_Link" target="_blank">Venue</a>
+                                    }
+                                </div>
+                            </article>
+                        }
+                    </div>
+                </section>
+            }
+        }
+    </div>
+</div>
+
+@code {
+    private List<WebPublication>? publications;
+    private IOrderedEnumerable<IGrouping<string?, WebPublication>>? groupedByYear;
+
+    protected override async Task OnInitializedAsync()
+    {
+        publications = await SheetService.GetWebPublicationsAsync();
+        if (publications == null)
+            return;
+
+        groupedByYear = publications
+            .GroupBy(p => string.IsNullOrWhiteSpace(p.Year) ? "Others" : p.Year)
+            .OrderByDescending(g => g.Key);
+    }
+}

@@ -1,0 +1,545 @@
+/* 파란색 및 기본 스타일 간섭 차단 */
+.people-page {
+    background-color: #ffffff;
+    min-height: 100vh;
+    padding: 6rem 0;
+    font-family: 'Montserrat', sans-serif;
+    color: #000;
+}
+
+/* app.css의 .container 대신 독립적인 컨테이너 */
+.people-container {
+    width: 90% !important;
+    max-width: 1600px !important;
+    margin: 0 auto !important;
+    padding: 0 2rem;
+}
+
+/* 헤더: 블랙 앤 화이트 */
+.page-header {
+    text-align: center;
+    margin-bottom: 4rem;
+    padding: 0;
+    border: none;
+}
+
+.page-header h1 {
+    font-size: 4.5rem;
+    font-weight: 200;
+    font-family: 'Cormorant Garamond', serif;
+    margin-bottom: 1rem;
+}
+
+.subtitle {
+    font-size: 0.9rem;
+    color: #999;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+}
+
+/* 카테고리 탭 네비게이션 - 이미지처럼 깔끔하게 */
+.category-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 5rem;
+    flex-wrap: wrap;
+    border: 1px solid #ddd;
+    border-radius: 50px;
+    overflow: hidden;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    background: #fff;
+}
+
+.tab-button {
+    padding: 0.9rem 2.2rem;
+    font-size: 0.95rem;
+    font-weight: 400;
+    background: transparent;
+    border: none;
+    border-right: 1px solid #ddd;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #666;
+    font-family: 'Montserrat', sans-serif;
+    white-space: nowrap;
+}
+
+.tab-button:last-child {
+    border-right: none;
+}
+
+.tab-button:hover {
+    background: #f8f8f8;
+    color: #000;
+}
+
+.tab-button.active {
+    background: #000;
+    color: #fff;
+    font-weight: 500;
+}
+
+/* 카테고리 컨텐츠 */
+.category-content {
+    animation: fadeIn 0.4s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 섹션 구분 */
+.people-section {
+    margin-bottom: 5rem;
+}
+
+.section-header {
+    margin-bottom: 3.5rem;
+    border-bottom: 2px solid #000;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: 15px;
+}
+
+.section-header h2 {
+    font-size: 2.6rem;
+    font-weight: 300;
+    color: #000;
+}
+
+.count {
+    font-size: 0.9rem;
+    color: #999;
+}
+
+/* 그리드: 가로로 여러 명씩 배치 */
+.people-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+    gap: 2.5rem 3rem;
+    width: 100% !important;
+}
+
+/* 인물 카드: 블랙 테두리 & 심플 화이트 */
+.person-card {
+    background: #fff;
+    border: 1px solid #eee;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: border-color 0.3s ease;
+    position: relative;
+}
+
+.person-card:hover {
+    border-color: #000;
+}
+
+/* 아바타: 세로로 긴 직사각형 프로필 */
+.person-avatar {
+    margin-bottom: 2rem;
+    width: 100%;
+    height: 400px;  /* 320px -> 400px로 증가 */
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-placeholder {
+    width: 100%;
+    height: 100%;  /* 전체 높이 */
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;  /* 4rem -> 5rem */
+    font-weight: 200;
+}
+
+/* 프로필 사진 스타일 */
+.avatar-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+    transition: transform 0.3s ease;
+}
+
+.person-card:hover .avatar-photo {
+    transform: scale(1.05);
+}
+
+
+.person-info {
+    margin-bottom: 2rem;
+}
+
+.person-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+}
+
+.person-affiliation {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.person-affiliation strong {
+    color: #000;
+}
+
+.person-email {
+    font-size: 0.9rem;
+    color: #888;
+    margin-top: 15px;
+}
+
+/* 상세 정보 */
+.person-details {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #f0f0f0;
+    flex-grow: 1;
+}
+
+.detail-item {
+    margin-bottom: 1.5rem;
+}
+
+.detail-item strong {
+    font-size: 0.7rem;
+    color: #bbb;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+}
+
+.detail-item p {
+    font-size: 0.9rem;
+    color: #444;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* 하단 링크 */
+.person-links {
+    margin-top: 2rem;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.person-links a {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #000 !important;
+    border-bottom: 2px solid #000;
+    padding-bottom: 2px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.person-links a:hover {
+    background: #000;
+    color: #fff !important;
+    padding: 4px 8px;
+}
+
+/* 뒤로가기 화살표 */
+.back-arrow-container {
+    margin-bottom: 3rem;
+}
+
+.back-arrow {
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    border: 1px solid #222;
+    color: #222;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-arrow:hover {
+    background: #222;
+    color: #fff;
+}
+
+/* 개인 상세 페이지 그리드 */
+.person-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 3rem;
+    margin-top: 2rem;
+}
+
+.person-card-large {
+    background: #fff;
+    border: 1px solid #eee;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+}
+
+/* 추가 정보 섹션 */
+.additional-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* 팀 리더 카드 강조 */
+.leader-card {
+    border: 2px solid #000 !important;
+    background: #fafafa;
+}
+
+/* 역할 배지 */
+.role-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.4rem 0.8rem;
+    background: #000;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    z-index: 10;
+}
+
+/* 논문 목록 스타일 */
+.publications-section {
+    background: #fff;
+    padding: 2rem;
+    border: 1px solid #eee;
+}
+
+.publication-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.publication-item {
+    padding: 1.5rem;
+    border-left: 3px solid #000;
+    background: #fafafa;
+    transition: all 0.3s ease;
+}
+
+.publication-item:hover {
+    background: #f0f0f0;
+    border-left-width: 5px;
+}
+
+.pub-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.pub-year {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #000;
+    background: #fff;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid #000;
+}
+
+.badge-corresponding {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.6rem;
+    background: #e74c3c;
+    color: #fff;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-cofirst {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.6rem;
+    background: #3498db;
+    color: #fff;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.pub-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 0.8rem;
+    line-height: 1.4;
+}
+
+.pub-venue {
+    font-size: 0.9rem;
+    color: #666;
+    font-style: italic;
+    margin-bottom: 0.5rem;
+}
+
+.pub-authors {
+    font-size: 0.85rem;
+    color: #888;
+    margin-bottom: 0.8rem;
+}
+
+.pub-notes {
+    font-size: 0.8rem;
+    color: #666;
+    line-height: 1.6;
+    margin-top: 0.8rem;
+    padding-top: 0.8rem;
+    border-top: 1px dashed #ddd;
+}
+
+.pub-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.pub-link {
+    font-size: 0.8rem;
+    color: #000;
+    text-decoration: none;
+    border-bottom: 2px solid #000;
+    padding-bottom: 2px;
+    transition: all 0.3s ease;
+}
+
+.pub-link:hover {
+    background: #000;
+    color: #fff;
+    padding: 4px 8px;
+}
+
+/* 반응형 디자인 */
+@media screen and (max-width: 1400px) {
+    .people-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+        gap: 2rem;
+    }
+    
+    .page-header h1 {
+        font-size: 3.5rem;
+    }
+    
+    .section-header h2 {
+        font-size: 2.2rem;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .person-detail-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .people-page {
+        padding: 4rem 0;
+    }
+    
+    .people-container {
+        width: 95% !important;
+        padding: 0 1rem;
+    }
+    
+    .category-tabs {
+        flex-direction: column;
+        border-radius: 12px;
+        width: 90%;
+    }
+    
+    .tab-button {
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+        padding: 1rem;
+        text-align: center;
+    }
+    
+    .tab-button:last-child {
+        border-bottom: none;
+    }
+    
+    .people-grid {
+        grid-template-columns: 1fr !important;
+        gap: 2rem;
+    }
+    
+    .page-header {
+        margin-bottom: 3rem;
+    }
+    
+    .page-header h1 {
+        font-size: 2.5rem;
+    }
+    
+    .section-header h2 {
+        font-size: 1.8rem;
+    }
+    
+    .person-card {
+        padding: 2rem 1.5rem;
+    }
+    
+    .person-avatar {
+        height: 350px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .page-header h1 {
+        font-size: 2rem;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .person-name {
+        font-size: 1.3rem;
+    }
+    
+    .tab-button {
+        font-size: 0.9rem;
+        padding: 0.9rem;
+    }
+    
+    .person-avatar {
+        height: 300px;
+    }
+}

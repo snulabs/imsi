@@ -1,0 +1,204 @@
+@page "/people"
+@page "/people/{Category}"
+@using MyPortfolio.Models
+@using MyPortfolio.Services
+@inject SheetService SheetService
+@inject NavigationManager Navigation
+
+<PageTitle>People - IMSI Lab</PageTitle>
+
+<link href="css/people.css" rel="stylesheet" />
+
+<div class="people-page">
+    <div class="people-container">
+        <header class="page-header">
+            <h1>People</h1>
+            <p class="subtitle">Imaging-driven Medical SuperIntelligence Group</p>
+        </header>
+
+        @if (people == null)
+        {
+            <div style="text-align:center; padding: 10rem;">
+                <p>Loading member data from Google Sheets...</p>
+            </div>
+        }
+        else
+        {
+            <!-- 카테고리 탭 네비게이션 -->
+            <div class="category-tabs">
+                <button class="tab-button @(selectedCategory == "professors" ? "active" : "")" 
+                        @onclick='() => SelectCategory("professors")'>
+                    Professors
+                </button>
+                <button class="tab-button @(selectedCategory == "researchers" ? "active" : "")" 
+                        @onclick='() => SelectCategory("researchers")'>
+                    Researchers
+                </button>
+                <button class="tab-button @(selectedCategory == "students" ? "active" : "")" 
+                        @onclick='() => SelectCategory("students")'>
+                    Students
+                </button>
+                <button class="tab-button @(selectedCategory == "advisors" ? "active" : "")" 
+                        @onclick='() => SelectCategory("advisors")'>
+                    Advisors
+                </button>
+                <button class="tab-button @(selectedCategory == "alumni" ? "active" : "")" 
+                        @onclick='() => SelectCategory("alumni")'>
+                    Alumni
+                </button>
+            </div>
+
+            <!-- 선택된 카테고리에 따라 표시 -->
+            <div class="category-content">
+                @if (selectedCategory == "professors")
+                {
+                    @RenderPeopleSection("Professors", professors)
+                }
+                else if (selectedCategory == "researchers")
+                {
+                    @RenderPeopleSection("Researchers", researchers)
+                }
+                else if (selectedCategory == "students")
+                {
+                    @RenderPeopleSection("Students", students)
+                }
+                else if (selectedCategory == "advisors")
+                {
+                    @RenderPeopleSection("Advisors", advisors)
+                }
+                else if (selectedCategory == "alumni")
+                {
+                    @RenderPeopleSection("Alumni", alumni)
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string? Category { get; set; }
+
+    private List<WebPerson>? people;
+    private List<WebPerson>? professors;
+    private List<WebPerson>? researchers;
+    private List<WebPerson>? students;
+    private List<WebPerson>? advisors;
+    private List<WebPerson>? alumni;
+    private string selectedCategory = "professors";
+
+    protected override async Task OnInitializedAsync()
+    {
+        people = await SheetService.GetWebPeopleAsync();
+        if (people == null) return;
+
+        professors = Filter(people, "professor");
+        researchers = Filter(people, "researcher");
+        students = Filter(people, "student");
+        advisors = Filter(people, "advisor");
+        alumni = Filter(people, "alumni");
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (!string.IsNullOrEmpty(Category))
+        {
+            selectedCategory = Category.ToLower();
+        }
+        else
+        {
+            selectedCategory = "professors";
+        }
+    }
+
+    private void SelectCategory(string category)
+    {
+        selectedCategory = category;
+        Navigation.NavigateTo($"/people/{category}");
+    }
+
+    private List<WebPerson> Filter(List<WebPerson> list, string term) 
+        => list.Where(p => p.Category?.ToLower().Contains(term) == true).ToList();
+
+    private void GoToPersonDetail(WebPerson person)
+    {
+        var urlSafeName = person.Name?.ToLower()
+            .Replace(" ", "-")
+            .Replace(".", "") ?? "";
+        Navigation.NavigateTo($"/person/{urlSafeName}");
+    }
+
+    private string? GetProfileImagePath(string? personId)
+    {
+        if (personId == "P_0001")
+        {
+            return "/images/profiles/11_namjoon_kim_skyblue.png";
+        }
+        return null;
+    }
+
+    RenderFragment RenderPeopleSection(string title, List<WebPerson>? list) => @<section class="people-section">
+        @if (list != null && list.Any())
+        {
+            <div class="section-header">
+                <h2>@title</h2>
+                <span class="count">@list.Count members</span>
+            </div>
+
+            <div class="people-grid">
+                @foreach (var p in list)
+                {
+                    <div class="person-card" @onclick="() => GoToPersonDetail(p)" style="cursor: pointer;">
+                        <div class="person-avatar">
+                            @{
+                                var imagePath = GetProfileImagePath(p.PersonId);
+                            }
+                            @if (!string.IsNullOrEmpty(imagePath))
+                            {
+                                <img src="@imagePath" alt="@p.Name" class="avatar-photo" />
+                            }
+                            else
+                            {
+                                <div class="avatar-placeholder">
+                                    @(string.IsNullOrWhiteSpace(p.Name) ? "I" : p.Name.Trim()[0].ToString().ToUpper())
+                                </div>
+                            }
+                        </div>
+
+                        <div class="person-info">
+                            <h3 class="person-name">@p.Name</h3>
+                            <p class="person-affiliation">
+                                <strong>@p.Org</strong><br />
+                                @p.Dept @(string.IsNullOrEmpty(p.SubOrg) ? "" : $"— {p.SubOrg}")
+                            </p>
+                            @if(!string.IsNullOrEmpty(p.Email)) { <p style="font-size:0.9rem; color:#666; margin: 10px 0;">@p.Email</p> }
+                        </div>
+
+                        <div class="person-details">
+                            @if (!string.IsNullOrEmpty(p.Education))
+                            {
+                                <div class="detail-item">
+                                    <strong>Education</strong>
+                                    <p>@((MarkupString)p.Education.Replace("\n", "<br/>"))</p>
+                                </div>
+                            }
+                            @if (!string.IsNullOrEmpty(p.Experience))
+                            {
+                                <div class="detail-item">
+                                    <strong>Experience</strong>
+                                    <p>@((MarkupString)p.Experience.Replace("\n", "<br/>"))</p>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="person-links">
+                            @if (!string.IsNullOrEmpty(p.Github)) { <a href="@p.Github" target="_blank">GITHUB</a> }
+                            @if (!string.IsNullOrEmpty(p.Linkedin)) { <a href="@p.Linkedin" target="_blank">LINKEDIN</a> }
+                            @if (!string.IsNullOrEmpty(p.Blog)) { <a href="@p.Blog" target="_blank">BLOG</a> }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </section>;
+}

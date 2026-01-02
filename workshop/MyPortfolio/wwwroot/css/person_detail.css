@@ -1,0 +1,195 @@
+.person-detail-page {
+    min-height: 100vh;
+    background-color: #ffffff;
+    padding: 4rem 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.loading-container {
+    text-align: center;
+    padding: 10rem 2rem;
+}
+
+.detail-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* 뒤로가기 버튼 */
+.back-button-container {
+    margin-bottom: 3rem;
+}
+
+.back-button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    background: transparent;
+    border: 1px solid #222;
+    color: #222;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.back-button:hover {
+    background: #222;
+    color: #fff;
+}
+
+/* 개인 정보 헤더 */
+.person-header {
+    display: flex;
+    gap: 3rem;
+    align-items: flex-start;
+    margin-bottom: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 2px solid #000;
+}
+
+.avatar-large {
+    width: 150px;
+    height: 150px;
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    font-weight: 200;
+    flex-shrink: 0;
+}
+
+.header-info h1 {
+    font-size: 3rem;
+    font-weight: 300;
+    margin-bottom: 0.5rem;
+    font-family: 'Cormorant Garamond', serif;
+}
+
+.position {
+    font-size: 1.2rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 1.5rem;
+}
+
+.affiliation {
+    font-size: 1.1rem;
+    color: #444;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+}
+
+.email a {
+    color: #000;
+    text-decoration: none;
+    border-bottom: 1px solid #000;
+    transition: all 0.3s ease;
+}
+
+.email a:hover {
+    background: #000;
+    color: #fff;
+    padding: 2px 8px;
+}
+
+/* 소셜 링크 */
+.social-links {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+}
+
+.social-link {
+    padding: 0.8rem 2rem;
+    border: 2px solid #000;
+    text-decoration: none;
+    color: #000;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.social-link:hover {
+    background: #000;
+    color: #fff;
+}
+
+/* 정보 섹션 */
+.info-sections {
+    margin-bottom: 4rem;
+}
+
+.info-section {
+    margin-bottom: 3rem;
+}
+
+.info-section h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #000;
+}
+
+.info-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #444;
+}
+
+/* 향후 추가될 섹션 */
+.future-sections {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 4rem;
+}
+
+.placeholder-section {
+    border: 2px dashed #ddd;
+    padding: 3rem 2rem;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.placeholder-section h2 {
+    font-size: 1.5rem;
+    color: #999;
+    margin-bottom: 1rem;
+}
+
+.placeholder-text {
+    color: #bbb;
+    font-style: italic;
+}
+
+/* 반응형 */
+@media screen and (max-width: 768px) {
+    .person-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 2rem;
+    }
+
+    .avatar-large {
+        width: 120px;
+        height: 120px;
+        font-size: 3rem;
+    }
+
+    .header-info h1 {
+        font-size: 2.2rem;
+    }
+
+    .social-links {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .future-sections {
+        grid-template-columns: 1fr;
+    }
+}
