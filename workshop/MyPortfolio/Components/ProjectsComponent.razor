@@ -1,0 +1,71 @@
+@using MyPortfolio.Models
+@using MyPortfolio.Services
+@inject SheetService SheetService
+
+<link href="css/projects.css" rel="stylesheet" />
+
+<div class="projects-page">
+    <div class="container">
+        <header class="page-header">
+            <h1>Research Projects</h1>
+            <p class="subtitle">Innovative AI solutions in Medical Imaging & Autonomous Systems</p>
+        </header>
+
+        @if (projects == null)
+        {
+            <div class="loading-container">
+                <div class="loading-spinner"></div>
+                <p>Loading projects...</p>
+            </div>
+        }
+        else
+        {
+            <div class="projects-grid">
+                @foreach (var proj in projects)
+                {
+                    <div class="project-card">
+                        <div class="card-header">
+                            <span class="project-icon">@proj.Icon</span>
+                            <span class="team-tag">@proj.TeamId</span>
+                        </div>
+                        
+                        <h2 class="project-title">@proj.Title</h2>
+                        
+                        <div class="project-content">
+                            <section class="overview">
+                                <h3>Overview</h3>
+                                <p>@proj.Overview</p>
+                            </section>
+
+                            <section class="achievements">
+                                <h3>Key Achievements</h3>
+                                <ul>
+                                    @foreach (var line in proj.Achievements.Split('\n', StringSplitOptions.RemoveEmptyEntries))
+                                    {
+                                        <li>@line.Trim()</li>
+                                    }
+                                </ul>
+                            </section>
+                        </div>
+
+                        <div class="card-footer">
+                            <div class="milestones">
+                                <strong>Next Milestones:</strong>
+                                <p>@proj.Milestones</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private List<WebProject>? projects;
+
+    protected override async Task OnInitializedAsync()
+    {
+        projects = await SheetService.GetWebProjectsAsync();
+    }
+}
