@@ -1,0 +1,255 @@
+@using MyPortfolio.Models
+@using MyPortfolio.Services
+
+<div class="contact-page">
+    <div class="contact-container">
+        <header class="page-header">
+            <h1>Contact Us</h1>
+            <p class="subtitle">Get in touch with IMSI Lab</p>
+        </header>
+
+        <div class="contact-grid">
+            <!-- 왼쪽: 지도 -->
+            <div class="map-section">
+                <div class="map-container">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3165.5!2d126.9505!3d37.4598!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca1556c93d3bb%3A0x3e0f8e0!2s1+Gwanak-ro%2C+Gwanak-gu%2C+Seoul!5e0!3m2!1sen!2skr!4v1736637000000!5m2!1sen!2skr"
+                        width="100%" 
+                        height="450" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+
+            <!-- 오른쪽: 연락처 정보 -->
+            <div class="info-section">
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="oi oi-map-marker"></i>
+                    </div>
+                    <h3>Address</h3>
+                    <p>Unit 609, 300-dong</p>
+                    <p>1 Gwanak-ro, Gwanak-gu</p>
+                    <p>Seoul, South Korea</p>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="oi oi-envelope-closed"></i>
+                    </div>
+                    <h3>E-Mail</h3>
+                    <a href="mailto:knj01@snu.ac.kr" class="contact-link">knj01@snu.ac.kr</a>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="oi oi-phone"></i>
+                    </div>
+                    <h3>Tel</h3>
+                    <a href="tel:+82-2-3290-3683" class="contact-link">00-3290-3683</a>
+                </div>
+
+                <!-- Join Us 섹션 -->
+                <div class="join-section">
+                    <h3>Join Our Team</h3>
+                    <p>We are always looking for talented researchers and students interested in medical AI.</p>
+                    <p>If you're interested in joining IMSI Lab, please send your CV and research interests to:</p>
+                    <a href="mailto:mailab.knj01@snu.ac.kr" class="join-button">
+                        <i class="oi oi-envelope-closed"></i> Send Application
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .contact-page {
+        min-height: 100vh;
+        background: #f8f9fa;
+        padding: 3rem 1rem;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .contact-container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 4rem;
+    }
+
+    .page-header h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+        font-family: 'Cormorant Garamond', serif;
+    }
+
+    .page-header .subtitle {
+        font-size: 1.1rem;
+        color: #7f8c8d;
+    }
+
+    .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        align-items: start;
+    }
+
+    /* 지도 섹션 */
+    .map-section {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    }
+
+    .map-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        min-height: 450px;
+    }
+
+    .map-container iframe {
+        width: 100%;
+        height: 100%;
+        min-height: 600px;
+    }
+
+    /* 정보 섹션 */
+    .info-section {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .info-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .info-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    }
+
+    .info-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .info-card h3 {
+        font-size: 1.5rem;
+        color: #2c3e50;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    .info-card p {
+        color: #5a6c7d;
+        line-height: 1.8;
+        margin: 0.5rem 0;
+    }
+
+    .contact-link {
+        display: inline-block;
+        color: #667eea;
+        font-size: 1.1rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+
+    .contact-link:hover {
+        color: #764ba2;
+        text-decoration: underline;
+    }
+
+    /* Join Section */
+    .join-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 2.5rem;
+        border-radius: 15px;
+        color: white;
+        text-align: center;
+    }
+
+    .join-section h3 {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+
+    .join-section p {
+        opacity: 0.95;
+        line-height: 1.7;
+        margin-bottom: 1.5rem;
+    }
+
+    .join-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1rem 2.5rem;
+        background: white;
+        color: #667eea;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1.05rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .join-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        background: #f8f9fa;
+    }
+
+    /* 반응형 */
+    @@media screen and (max-width: 1024px) {
+        .contact-grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .map-container iframe {
+            min-height: 400px;
+        }
+    }
+
+    @@media screen and (max-width: 768px) {
+        .page-header h1 {
+            font-size: 2.2rem;
+        }
+
+        .info-card {
+            padding: 1.5rem;
+        }
+
+        .join-section {
+            padding: 2rem;
+        }
+    }
+</style>
