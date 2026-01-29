@@ -1,0 +1,497 @@
+@using MyPortfolio.Models
+
+<div class="gallery-page">
+    <div class="gallery-container">
+        <header class="page-header">
+            <h1>Gallery</h1>
+            <p class="subtitle">IMSI Lab Memories</p>
+        </header>
+
+        <!-- 연도별 탭 -->
+        <div class="year-tabs">
+            @foreach (var year in years)
+            {
+                <button class="@(selectedYear == year ? "year-tab active" : "year-tab")"
+                        @onclick="() => SelectYear(year)">
+                    @year
+                </button>
+            }
+        </div>
+
+        <!-- 이벤트 그리드 -->
+        <div class="events-grid">
+            @if (filteredEvents != null && filteredEvents.Any())
+            {
+                @foreach (var evt in filteredEvents)
+                {
+                    <div class="event-card" @onclick="() => OpenEventDetail(evt)">
+                        <div class="event-image" style="background-image: url('@evt.Images?.FirstOrDefault()');">
+                            @if (evt.Images != null && evt.Images.Count > 1)
+                            {
+                                <div class="image-count">
+                                    <i class="oi oi-camera-slr"></i> @evt.Images.Count
+                                </div>
+                            }
+                        </div>
+                        <div class="event-info">
+                            <h3>@evt.Title</h3>
+                            <p class="event-date">@evt.Date</p>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="no-events">
+                    <p>No events for @selectedYear</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- 이벤트 상세 모달 -->
+@if (selectedEvent != null)
+{
+    <div class="gallery-modal" @onclick="CloseEventDetail">
+        <div class="gallery-modal-content" @onclick:stopPropagation="true">
+            <button class="gallery-modal-close" @onclick="CloseEventDetail">✕</button>
+            
+            <div class="modal-header">
+                <h2>@selectedEvent.Title</h2>
+                <p class="modal-date">@selectedEvent.Date</p>
+            </div>
+
+            <!-- 이미지 슬라이더 -->
+            <div class="image-slider">
+                @if (selectedEvent.Images != null && selectedEvent.Images.Any())
+                {
+                    @if (selectedEvent.Images.Count > 1)
+                    {
+                        <button class="slider-btn prev" @onclick="PrevImage">‹</button>
+                        <button class="slider-btn next" @onclick="NextImage">›</button>
+                    }
+                    
+                    <div class="slider-image">
+                        <img src="@selectedEvent.Images[currentImageIndex]" alt="@selectedEvent.Title" />
+                    </div>
+
+                    @if (selectedEvent.Images.Count > 1)
+                    {
+                        <div class="slider-dots">
+                            @for (int i = 0; i < selectedEvent.Images.Count; i++)
+                            {
+                                var index = i;
+                                <span class="@(currentImageIndex == index ? "dot active" : "dot")"
+                                      @onclick="() => currentImageIndex = index"></span>
+                            }
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<string> years = new List<string> { "2026", "2025" };
+    private string selectedYear = "2026";
+    private List<GalleryEvent> allEvents = new();
+    private List<GalleryEvent> filteredEvents = new();
+    private GalleryEvent? selectedEvent = null;
+    private int currentImageIndex = 0;
+
+    protected override void OnInitialized()
+    {
+        LoadGalleryData();
+        FilterEventsByYear();
+    }
+
+    private void LoadGalleryData()
+    {
+        allEvents = new List<GalleryEvent>
+        {
+            new GalleryEvent
+            {
+                EventId = "2026_singapore",
+                Title = "싱가포르_IMSI",
+                Date = "2026.01.15",
+                Year = "2026",
+                Images = new List<string>
+                {
+                    "/images/gallery/2026/singapore_1.jpg",
+                    "/images/gallery/2026/singapore_2.jpg"
+                },
+                Description = "IMSI Lab Singapore Trip 2026"
+            },
+            new GalleryEvent
+            {
+                EventId = "2025_resort",
+                Title = "곤지암리조트_대한전자공학회",
+                Date = "2025.12.20",
+                Year = "2025",
+                Images = new List<string>
+                {
+                    "/images/gallery/2025/resort_1.jpg"
+                },
+                Description = "곤지암리조트 대한전자공학회"
+            }
+        };
+    }
+
+    private void SelectYear(string year)
+    {
+        selectedYear = year;
+        FilterEventsByYear();
+    }
+
+    private void FilterEventsByYear()
+    {
+        filteredEvents = allEvents.Where(e => e.Year == selectedYear)
+                                   .OrderByDescending(e => e.Date)
+                                   .ToList();
+    }
+
+    private void OpenEventDetail(GalleryEvent evt)
+    {
+        selectedEvent = evt;
+        currentImageIndex = 0;
+    }
+
+    private void CloseEventDetail()
+    {
+        selectedEvent = null;
+        currentImageIndex = 0;
+    }
+
+    private void NextImage()
+    {
+        if (selectedEvent?.Images != null && currentImageIndex < selectedEvent.Images.Count - 1)
+        {
+            currentImageIndex++;
+        }
+        else if (selectedEvent?.Images != null)
+        {
+            currentImageIndex = 0; // 마지막 이미지에서 첫번째로
+        }
+    }
+
+    private void PrevImage()
+    {
+        if (currentImageIndex > 0)
+        {
+            currentImageIndex--;
+        }
+        else if (selectedEvent?.Images != null)
+        {
+            currentImageIndex = selectedEvent.Images.Count - 1; // 첫번째에서 마지막으로
+        }
+    }
+
+    public List<string> GetAllGalleryImages()
+    {
+        return allEvents
+            .SelectMany(e => e.Images ?? new List<string>())
+            .ToList();
+    }
+}
+
+<style>
+    .gallery-page {
+        min-height: 100vh;
+        background: #f8f9fa;
+        padding: 3rem 1rem;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .gallery-container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .page-header h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+        font-family: 'Cormorant Garamond', serif;
+    }
+
+    .page-header .subtitle {
+        font-size: 1.1rem;
+        color: #7f8c8d;
+    }
+
+    /* 연도 탭 */
+    .year-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 3rem;
+    }
+
+    .year-tab {
+        padding: 0.8rem 2.5rem;
+        border: 2px solid #e0e0e0;
+        background: white;
+        border-radius: 30px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #666;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .year-tab:hover {
+        border-color: #667eea;
+        color: #667eea;
+    }
+
+    .year-tab.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-color: transparent;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    /* 이벤트 그리드 */
+    .events-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 2rem;
+    }
+
+    .event-card {
+        background: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        cursor: pointer;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .event-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+    .event-image {
+        width: 100%;
+        height: 250px;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+
+    .image-count {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    .event-info {
+        padding: 1.5rem;
+    }
+
+    .event-info h3 {
+        font-size: 1.3rem;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+
+    .event-date {
+        color: #7f8c8d;
+        font-size: 0.95rem;
+    }
+
+    .no-events {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 4rem;
+        color: #999;
+        font-size: 1.2rem;
+    }
+
+    /* 갤러리 모달 */
+    .gallery-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        padding: 2rem;
+    }
+
+    .gallery-modal-content {
+        background: white;
+        border-radius: 20px;
+        max-width: 1000px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+    }
+
+    .gallery-modal-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: none;
+        background: #f0f0f0;
+        font-size: 1.5rem;
+        cursor: pointer;
+        z-index: 10001;
+        transition: background 0.2s;
+    }
+
+    .gallery-modal-close:hover {
+        background: #e0e0e0;
+    }
+
+    .modal-header {
+        padding: 2rem 3rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .modal-header h2 {
+        font-size: 2rem;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+    }
+
+    .modal-date {
+        color: #7f8c8d;
+        font-size: 1rem;
+    }
+
+    /* 이미지 슬라이더 */
+    .image-slider {
+        position: relative;
+        padding: 2rem;
+    }
+
+    .slider-image {
+        width: 100%;
+        height: 500px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8f9fa;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .slider-image img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .slider-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: none;
+        background: rgba(255, 255, 255, 0.9);
+        font-size: 2rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .slider-btn:hover {
+        background: white;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    }
+
+    .slider-btn.prev {
+        left: 3rem;
+    }
+
+    .slider-btn.next {
+        right: 3rem;
+    }
+
+    .slider-dots {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #d0d0d0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .dot.active {
+        background: #667eea;
+        width: 30px;
+        border-radius: 5px;
+    }
+
+    @@media screen and (max-width: 768px) {
+        .events-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .slider-btn {
+            width: 40px;
+            height: 40px;
+            font-size: 1.5rem;
+        }
+
+        .slider-btn.prev {
+            left: 1rem;
+        }
+
+        .slider-btn.next {
+            right: 1rem;
+        }
+
+        .slider-image {
+            height: 300px;
+        }
+
+        .gallery-modal {
+            padding: 0;
+        }
+
+        .gallery-modal-content {
+            border-radius: 0;
+            max-height: 100vh;
+        }
+    }
+</style>

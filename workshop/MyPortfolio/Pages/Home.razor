@@ -1,5 +1,6 @@
 @page "/"
 @using MyPortfolio.Components
+@implements IDisposable
 
 <PageTitle>IMSI Lab</PageTitle>
 
@@ -34,18 +35,20 @@
                     @onclick='() => ShowPage("projects")'>Projects</button>
             <button class="@(currentPage == "publications" ? "nav-link active" : "nav-link")" 
                     @onclick='() => ShowPage("publications")'>Publications</button>
+            <button class="@(currentPage == "gallery" ? "nav-link active" : "nav-link")" 
+                    @onclick='() => ShowPage("gallery")'>Gallery</button>
             <button class="@(currentPage == "contact" ? "nav-link active" : "nav-link")" 
                     @onclick='() => ShowPage("contact")'>Contact</button>
         </div>
     </div>
 </nav>
 
-<!-- 메인 컨텐츠 (네비바 높이만큼 패딩) -->
+<!-- 메인 컨텐츠 -->
 <div class="main-content">
     @if (currentPage == "home")
     {
-        <!-- 홈 화면 - 배경 이미지 추가 -->
-        <div class="hero-section-with-bg">
+        <!-- 홈 화면 - 배경 이미지 슬라이더 -->
+        <div class="hero-section-with-bg" style="background-image: url('@GetCurrentHeroImage()');">
             <div class="hero-overlay"></div>
             <div class="hero-content">
                 <h1 class="hero-title">IMSI Lab</h1>
@@ -76,11 +79,11 @@
                         <h3>Our Team</h3>
                         <p>Multidisciplinary researchers across 5 specialized teams working on breakthrough medical AI projects</p>
                         <div class="team-info">
-                            <div class="team-item"><strong class="text-orange">Team SUDAL</strong> <span>3D Gen-AI</span></div>
-                            <div class="team-item"><strong class="text-blue">Team PNI</strong> <span>Neural Detection</span></div>
-                            <div class="team-item"><strong class="text-red">Team CEUS</strong> <span>Ultrasound Analysis</span></div>
-                            <div class="team-item"><strong class="text-green">Team MultiModal</strong> <span>Vision-Language</span></div>
-                            <div class="team-item"><strong class="text-purple">Team HAEDAL</strong> <span>3D Medical AI study</span></div>
+                            <div class="team-item"><strong class="text-orange">SUDAL</strong> <span>3D Gen-AI</span></div>
+                            <div class="team-item"><strong class="text-blue">PNI</strong> <span>Neural Detection</span></div>
+                            <div class="team-item"><strong class="text-red">CEUS</strong> <span>Ultrasound Analysis</span></div>
+                            <div class="team-item"><strong class="text-green">MultiModal</strong> <span>Vision-Language</span></div>
+                            <div class="team-item"><strong class="text-purple">HAEDAL</strong> <span>3D Medical AI study</span></div>
                         </div>
                     </div>
 
@@ -108,27 +111,33 @@
     }
     else
     {
-        <!-- 다른 페이지 컨텐츠 -->
-        @if (currentPage.StartsWith("people-"))
-        {
-            <PeopleComponent Category="@currentPage.Replace("people-", "")" OnPersonSelected="ShowPersonDetail" />
-        }
-        else if (currentPage == "teams")
-        {
-            <TeamMembersComponent OnPersonSelected="ShowPersonDetail" />
-        }
-        else if (currentPage == "projects")
-        {
-            <ProjectsComponent />
-        }
-        else if (currentPage == "publications")
-        {
-            <PublicationsComponent />
-        }
-        else if (currentPage == "contact")
-        {
-            <ContactComponent />
-        }
+        <!-- 다른 페이지 컨텐츠 - 패딩 추가 -->
+        <div class="page-content">
+            @if (currentPage.StartsWith("people-"))
+            {
+                <PeopleComponent Category="@currentPage.Replace("people-", "")" OnPersonSelected="ShowPersonDetail" />
+            }
+            else if (currentPage == "teams")
+            {
+                <TeamMembersComponent OnPersonSelected="ShowPersonDetail" />
+            }
+            else if (currentPage == "projects")
+            {
+                <ProjectsComponent />
+            }
+            else if (currentPage == "publications")
+            {
+                <PublicationsComponent />
+            }
+            else if (currentPage == "gallery")
+            {
+                <GalleryComponent @ref="galleryComponent" />
+            }
+            else if (currentPage == "contact")
+            {
+                <ContactComponent />
+            }
+        </div>
     }
 </div>
 
@@ -146,6 +155,49 @@
     private bool showPeopleDropdown = false;
     private string currentPage = "home";
     private string? selectedPersonId = null;
+    private GalleryComponent? galleryComponent;
+    
+    // 배경 이미지 슬라이더
+    private List<string> heroImages = new();
+    private int currentHeroImageIndex = 0;
+    private System.Threading.Timer? imageTimer;
+
+    protected override void OnInitialized()
+    {
+        LoadHeroImages();
+        StartImageRotation();
+    }
+
+    private void LoadHeroImages()
+    {
+        heroImages = new List<string>
+        {
+            "/images/gallery/2026/singapore_1.jpg",
+            "/images/gallery/2026/singapore_2.jpg",
+            "/images/gallery/2025/resort_1.jpg"
+        };
+    }
+
+    private string GetCurrentHeroImage()
+    {
+        if (heroImages.Any())
+        {
+            return heroImages[currentHeroImageIndex];
+        }
+        return "/images/gallery/2026/singapore_1.jpg";
+    }
+
+    private void StartImageRotation()
+    {
+        imageTimer = new System.Threading.Timer((_) =>
+        {
+            if (heroImages.Any())
+            {
+                currentHeroImageIndex = (currentHeroImageIndex + 1) % heroImages.Count;
+                InvokeAsync(StateHasChanged);
+            }
+        }, null, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));
+    }
 
     private void TogglePeopleDropdown()
     {
@@ -169,6 +221,11 @@
     {
         selectedPersonId = null;
         StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        imageTimer?.Dispose();
     }
 }
 
@@ -284,23 +341,28 @@
         color: #667eea;
     }
 
-    /* 메인 컨텐츠 여백 */
+    /* 메인 컨텐츠 - 패딩 제거 */
     .main-content {
-        padding-top: 80px;
         min-height: 100vh;
     }
 
-    /* 히어로 섹션 - 배경 이미지 */
+    /* 다른 페이지들만 패딩 추가 */
+    .page-content {
+        padding-top: 80px;
+    }
+
+    /* 히어로 섹션 - 배경 이미지 슬라이더 */
     .hero-section-with-bg {
         position: relative;
         min-height: 600px;
         display: flex;
         align-items: center;
         justify-content: center;
-        background-image: url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=2070');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
+        transition: background-image 1.5s ease-in-out;
+        margin-top: 80px;
     }
 
     .hero-overlay {
@@ -309,16 +371,21 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(255, 255, 255, 0.85);
-        backdrop-filter: blur(5px);
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(0px);
     }
 
     .hero-content {
         position: relative;
         z-index: 2;
         text-align: center;
-        padding: 5rem 2rem 3rem;
+        padding: 3rem 4rem;
         font-family: 'Montserrat', sans-serif;
+        background: rgba(255, 255, 255, 0.85);
+        border-radius: 20px;
+        max-width: 900px;
+        margin: 0 auto;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
     }
 
     .hero-title {
@@ -479,7 +546,7 @@
             font-size: 0.9rem;
         }
 
-        .main-content {
+        .page-content {
             padding-top: 140px;
         }
 
@@ -494,6 +561,10 @@
 
         .hero-section-with-bg {
             min-height: 400px;
+        }
+
+        .hero-content {
+            padding: 2rem;
         }
     }
 
@@ -521,6 +592,10 @@
 
         .hero-section-with-bg {
             min-height: 350px;
+        }
+
+        .hero-content {
+            padding: 1.5rem;
         }
     }
 </style>
